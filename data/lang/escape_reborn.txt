@@ -1,0 +1,17 @@
+[ru]
+ER__PLAYER_ESCAPED = %n сбежал!
+ER__SLAY_BY_TIMEOUT = ^4* ^1Все не сбежавшие ^3террористы ^1были убиты...
+ES__OBJ_INFO_TT = \yВы - террорист!^n\wВаши задачи:^n\yОсновная: \wДобраться до зоны побега %L\yВторостепенная: \wУничтожить всех контр-террористов
+ES__OBJ_INFO_CT = \yВы - контр-террорист!^n\wВаши задачи:^n\yОсновная: \wНе дать террористам сбежать %L\yВторостепенная: \wУничтожить всех террористов
+ES__OBJ_INFO_RADAR_ZONES_ON = (\rкрасные \wметки на радаре)^n
+ES__OBJ_INFO_RADAR_ZONES_OFF = ^n
+ES__OBJ_BUTTONS = ^n^n\y4. \wОкей, погнали!^n\y5. \wЯ знаю правила, не приставай!
+
+[en]
+ER__PLAYER_ESCAPED = %n has escaped!
+ER__SLAY_BY_TIMEOUT = ^4* ^1All non-escaped ^3terrorists ^1were killed...
+ES__OBJ_INFO_TT = \yYou are a terrorist!^n\wYour objectives:^n\yPrimary: \wGet to escape zone %L\ySecondary: \wEliminate all counter-terrorists
+ES__OBJ_INFO_CT = \yYou are a counter-terrorist!^n\wYour objectives:^n\yPrimary: \wPrevent terrorists from escaping %L\ySecondary: \wEliminate all terrorists
+ES__OBJ_INFO_RADAR_ZONES_ON = (\rred \wmarks on radar)^n
+ES__OBJ_INFO_RADAR_ZONES_OFF = ^n
+ES__OBJ_BUTTONS = ^n^n\y4. \wOkay, let's go!^n\y5. \wI know the rules, do not bother!
