@@ -54,6 +54,9 @@
 			* Bugfixes:
 				* Fixed wrong 'es_instant_tt_loose_by_ratio' behavior
 				* Fixed 'ATYPE_BOOL' error
+		0.6 (21.02.2024):
+			* Bugfixes:
+				* Fixed missing round counter reset on restart
 */
 
 /* Things that can be useful with this plugin (future plans?):
@@ -78,7 +81,7 @@
 	* Total / Win(per team) round counting with command (by cvar) execution when limit is reached
 */
 
-new const PLUGIN_VERSION[] = "0.5"
+new const PLUGIN_VERSION[] = "0.6"
 
 /* -------------------- */
 
@@ -709,6 +712,9 @@ public OnRestartRound_Pre() {
 
 		g_iNumEscapeRounds = 1
 		arrayset(g_iLastTeam, _:TEAM_UNASSIGNED, sizeof(g_iLastTeam))
+
+		// prevent hardcoded swap after 3 rounds and use g_iNumEscapeRounds as counter instead
+		set_member_game(m_iNumEscapeRounds, 0)
 
 		return // !!! !!! !!!
 	}
