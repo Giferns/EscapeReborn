@@ -50,6 +50,10 @@
 				* Cvar 'es_rounds_to_switch_teams' renamed to 'es_rounds_to_swap_teams'
 		0.4 (13.03.2019):
 			* Public release
+		0.5 (10.07.2022):
+			* Bugfixes:
+				* Fixed wrong 'es_instant_tt_loose_by_ratio' behavior
+				* Fixed 'ATYPE_BOOL' error
 */
 
 /* Things that can be useful with this plugin (future plans?):
@@ -74,7 +78,7 @@
 	* Total / Win(per team) round counting with command (by cvar) execution when limit is reached
 */
 
-new const PLUGIN_VERSION[] = "0.4"
+new const PLUGIN_VERSION[] = "0.5"
 
 /* -------------------- */
 
@@ -96,6 +100,11 @@ new const PLUGIN_VERSION[] = "0.4"
 
 #if !defined MAX_MENU_LENGTH
 	#define MAX_MENU_LENGTH 512
+#endif
+
+// https://dev-cs.ru/resources/73/update/1899/
+#if REAPI_VERSION < 59177
+    #define ATYPE_BOOL ATYPE_INTEGER
 #endif
 
 const MENU_KEYS = MENU_KEY_4|MENU_KEY_5
@@ -465,7 +474,7 @@ public OnRoundEnd_Pre(WinStatus:iWinStatus, ScenarioEventEndRound:iScenarioEvent
 		return HC_CONTINUE
 	}
 
-	SetHookChainReturn(ATYPE_INTEGER, false)
+	SetHookChainReturn(ATYPE_BOOL, false)
 	return HC_SUPERCEDE
 }
 
@@ -609,7 +618,7 @@ stock bool:func_CheckPotentialEscapers() {
 			iCandidateCount++
 		}
 
-		return func_CheckRatio(g_iHaveEscaped + iCandidateCount)
+		return (iCandidateCount && func_CheckRatio(g_iHaveEscaped + iCandidateCount))
 	}
 
 	//else ->
