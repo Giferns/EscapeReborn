@@ -57,6 +57,9 @@
 		0.6 (21.02.2024):
 			* Bugfixes:
 				* Fixed missing round counter reset on restart
+		0.7 (03.03.2025):
+			* Bugfixes:
+				* Fixed clients overflow on teamswap with large number of players (10x10 and more)
 */
 
 /* Things that can be useful with this plugin (future plans?):
@@ -212,6 +215,7 @@ new g_msgHostagePos
 new g_msgHostageK
 new bool:g_bGotHostagePos[MAX_PLAYERS + 1]
 new g_eGotInfo[MAX_PLAYERS + 1][TeamName]
+new g_msgTeamScore
 
 /* -------------------- */
 
@@ -240,6 +244,7 @@ public plugin_init() {
 	g_msgScoreInfo = get_user_msgid("ScoreInfo")
 	g_msgHostagePos = get_user_msgid("HostagePos")
 	g_msgHostageK = get_user_msgid("HostageK")
+	g_msgTeamScore = get_user_msgid("TeamScore")
 
 	RegisterHookChain(RG_CSGameRules_RestartRound, "OnRestartRound_Pre")
 	RegisterHookChain(RG_CSGameRules_RestartRound, "OnRestartRound_Post", true)
@@ -795,9 +800,17 @@ public OnRestartRound_Pre() {
 		iNumConsecutiveTerroristLoses = iTempCtLoses
 		iNumConsecutiveCTLoses = iTempTtLoses
 
+		// old ->
 		// forces gamedll to swap teams
 		// https://github.com/s1lentq/ReGameDLL_CS/blob/master/regamedll/dlls/multiplay_gamerules.cpp#L1771
-		set_member_game(m_iNumEscapeRounds, 3)
+		//set_member_game(m_iNumEscapeRounds, 3)
+		//
+		// new v0.7 (clients overflow fix) ->
+		set_member_game(m_iNumEscapeRounds, 0)
+		SwapPlayers()
+		SwapWins()
+		// <-
+		
 		g_iNumEscapeRounds = 0
 
 		arrayset(g_iLastTeam, _:TEAM_UNASSIGNED, sizeof(g_iLastTeam))
@@ -814,6 +827,41 @@ public OnRestartRound_Pre() {
 
 	/*log_message( "m_iAccountTerrorist: %d | m_iAccountCT: %d | m_iLoserBonus: %d",
 		get_member_game(m_iAccountTerrorist), get_member_game(m_iAccountCT), get_member_game(m_iLoserBonus) );*/
+}
+
+/* -------------------- */
+
+SwapPlayers() {
+	new pPlayers[32], iPlCount, pPlayer
+	get_players(pPlayers, iPlCount)
+	
+	for(new i; i < iPlCount; i++) {
+		pPlayer = pPlayers[i]
+		
+		switch(get_member(pPlayer, m_iTeam)) {
+			case TEAM_TERRORIST: set_member(pPlayer, m_iTeam, TEAM_CT)
+			case TEAM_CT: set_member(pPlayer, m_iTeam, TEAM_TERRORIST)
+		}
+	}
+}
+
+/* -------------------- */
+
+SwapWins() {
+	new iWinsTT = get_member_game(m_iNumTerroristWins)
+	new iWinsCT = get_member_game(m_iNumCTWins)
+	set_member_game(m_iNumTerroristWins, iWinsCT)
+	set_member_game(m_iNumCTWins, iWinsTT)
+	
+	emessage_begin(MSG_ALL, g_msgTeamScore)
+	ewrite_string("CT")
+	ewrite_short(iWinsTT)
+	emessage_end()
+
+	emessage_begin(MSG_ALL, g_msgTeamScore)
+	ewrite_string("TERRORIST")
+	ewrite_short(iWinsCT)
+	emessage_end()
 }
 
 /* -------------------- */
