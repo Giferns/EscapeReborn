@@ -84,7 +84,7 @@
 	* Total / Win(per team) round counting with command (by cvar) execution when limit is reached
 */
 
-new const PLUGIN_VERSION[] = "0.6"
+new const PLUGIN_VERSION[] = "0.7"
 
 /* -------------------- */
 
