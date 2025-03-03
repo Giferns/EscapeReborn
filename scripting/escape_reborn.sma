@@ -1,9 +1,9 @@
 /*
 	Plugin: 'Escape: Reborn'
 
-	Plugin author ('how to' ignored, only suggestions & bugreport): http://t.me/blacksignature
+	Plugin author ('how to' will be ignored, only suggestions & bugreport): http://t.me/blacksignature
 
-	Plugin thread: ...
+	Plugin thread: https://dev-cs.ru/threads/5680/
 
 	Description:
 		This plugin brings back (and allows you to customize its rules) an old unsupported
